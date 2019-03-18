@@ -1,0 +1,32 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    matplotlib (1.0.0)
+      pycall (>= 1.0.0)
+    numo (0.1.1)
+      numo-fftw (~> 0.1.1)
+      numo-gnuplot (~> 0.2.4)
+      numo-gsl (~> 0.1.1)
+      numo-linalg (~> 0.1.0)
+      numo-narray (~> 0.9.1)
+    numo-fftw (0.1.1)
+      numo-narray (~> 0.9.0)
+    numo-gnuplot (0.2.4)
+    numo-gsl (0.1.2)
+      numo-narray (>= 0.9.0.8)
+    numo-linalg (0.1.4)
+      numo-narray (>= 0.9.0.7)
+    numo-narray (0.9.1.4)
+    pycall (1.2.1)
+    red-datasets (0.0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  matplotlib (= 1.0.0)
+  numo (= 0.1.1)
+  red-datasets (= 0.0.7)
+
+BUNDLED WITH
+   1.16.6
