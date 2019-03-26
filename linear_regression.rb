@@ -29,8 +29,8 @@ end
 
 # Load data
 data = CSV.read("pizza.txt", col_sep: "\s", headers: true)
-X = Numo::NArray[*data.by_col[0].map(&:to_i)]
-Y = Numo::NArray[*data.by_col[1].map(&:to_i)]
+X = Numo::NArray[*data['Reservations'].map(&:to_i)]
+Y = Numo::NArray[*data['Pizzas'].map(&:to_i)]
 
 # Phase 1: Find the line
 w, b = train(X, Y, iterations: 10000, alpha: 0.001)
@@ -49,4 +49,8 @@ require 'matplotlib/pyplot'
 plt = Matplotlib::Pyplot
 plt.xlabel("Reservations", fontsize: 20)
 plt.ylabel("Pizzas", fontsize: 20)
+plt.plot(X.to_a, Y.to_a, "go")
+x_edge, y_edge = 50, 50
+plt.axis([0, x_edge, 0, y_edge])
+plt.plot([0, x_edge], [b, predict(x_edge, w, b)], linewidth=2.0, color="b")
 plt.show()
