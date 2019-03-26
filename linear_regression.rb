@@ -16,24 +16,24 @@ def gradient(x, y, w, b)
     return w_gradient, b_gradient
 end
 
-def train(x, y, iterations:, alpha:)
+def train(x, y, iterations:, lr:)
     w = b = 0
     iterations.times do |iteration|
         puts("#{iteration} => Loss: #{loss(x, y, w, b)}")
         w_gradient, b_gradient = gradient(x, y, w, b)
-        w -= w_gradient * alpha
-        b -= b_gradient * alpha
+        w -= w_gradient * lr
+        b -= b_gradient * lr
     end
     return w, b
 end
 
 # Load data
 data = CSV.read("pizza.txt", col_sep: "\s", headers: true)
-X = Numo::NArray[*data['Reservations'].map(&:to_i)]
+X = Numo::NArray[*data['Reservations'].map(&:to_f)]
 Y = Numo::NArray[*data['Pizzas'].map(&:to_i)]
 
 # Phase 1: Find the line
-w, b = train(X, Y, iterations: 10000, alpha: 0.001)
+w, b = train(X, Y, iterations: 10000, lr: 0.001)
 puts("Parameters: w={w}, b=#{b}")
 
 # Phase 2: Use the line to make a prediction
