@@ -19,7 +19,7 @@ end
 def train(x, y, iterations:, lr:)
     w = b = 0
     iterations.times do |iteration|
-        puts("#{iteration} => Loss: #{loss(x, y, w, b)}")
+        puts "#{iteration} => Loss: #{loss(x, y, w, b)}"
         w_gradient, b_gradient = gradient(x, y, w, b)
         w -= w_gradient * lr
         b -= b_gradient * lr
@@ -34,14 +34,14 @@ Y = Numo::NArray[*data['Pizzas'].map(&:to_i)]
 
 # Phase 1: Find the line
 w, b = train(X, Y, iterations: 10000, lr: 0.001)
-puts("Parameters: w={w}, b=#{b}")
+puts "Parameters: w={w}, b=#{b}"
 
 # Phase 2: Use the line to make a prediction
 x = 25
 y_hat = predict(x, w, b)
-puts("Prediction: reservations=#{x} => pizzas=#{y_hat}")
+puts "Prediction: reservations=#{x} => pizzas=#{y_hat}"
 
-puts("Enter to continue...")
+puts "Enter to continue..."
 gets
 
 # Plot chart

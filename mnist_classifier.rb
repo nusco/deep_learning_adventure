@@ -33,7 +33,7 @@ def report(iteration, x_train, y_train, x_test, y_test, w)
     failures = (classify(x_test, w) - y_test).ne(0).count
     matches = (n_test_examples - failures) * 100.0 / n_test_examples
     training_loss = loss(x_train, y_train, w)
-    puts("#{iteration} - Loss: #{training_loss}, #{matches}%")
+    puts "#{iteration} - Loss: #{training_loss}, #{matches}%"
 end
 
 def train(x_train, y_train, x_test, y_test, iterations:, lr:)
@@ -52,12 +52,12 @@ def one_hot_encode(labels, number_of_classes: 10)
     result
 end
 
-print("Loading data...")
+print "Loading data..."
 require 'datasets'
 x_train =  Numo::NArray[*Datasets::MNIST.new(type: :train).to_a.map(&:pixels)]
 y_train = one_hot_encode(Numo::NArray[*Datasets::MNIST.new(type: :train).to_a.map(&:label)])
 x_test = Numo::NArray[*Datasets::MNIST.new(type: :test).to_a.map(&:pixels)]
 y_test = Numo::NArray[*Datasets::MNIST.new(type: :test).to_a.map(&:label)]
-puts(" Done")
+puts " Done"
 
 w = train(x_train, y_train, x_test, y_test, iterations: 200, lr: 1e-5)
