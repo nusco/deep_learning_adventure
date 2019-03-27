@@ -6,8 +6,7 @@ def sigmoid(z)
 end
 
 def forward(x, w)
-    weighted_sum = x.dot(w)
-    return sigmoid(weighted_sum)
+    return sigmoid(x.dot(w))
 end
 
 def classify(x, w)
@@ -29,11 +28,11 @@ def gradient(x, y, w)
 end
 
 def report(iteration, x_train, y_train, x_test, y_test, w)
-    n_test_examples = y_test.shape[0]
-    failures = (classify(x_test, w) - y_test).ne(0).count
-    matches = (n_test_examples - failures) * 100.0 / n_test_examples
+    total_examples = x_test.shape[0]
+    matches = (classify(x_test, w).eq y_test).count
+    matches_percent = matches * 100 / total_examples
     training_loss = loss(x_train, y_train, w)
-    puts "#{iteration} - Loss: #{training_loss}, #{matches}%"
+    puts "#{iteration} - Loss: #{training_loss}, #{matches_percent}%"
 end
 
 def train(x_train, y_train, x_test, y_test, iterations:, lr:)

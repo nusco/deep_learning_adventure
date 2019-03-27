@@ -37,9 +37,9 @@ end
 
 def test(x, y, w)
     total_examples = x.shape[0]
-    correct_results = (classify(x, w).eq y).count
-    success_percent = correct_results * 100 / total_examples
-    puts "Success: #{correct_results}/#{total_examples}"
+    matches = (classify(x, w).eq y).count
+    matches_percent = matches * 100 / total_examples
+    puts "Success: #{matches}/#{total_examples}"
 end
 
 # Load data
