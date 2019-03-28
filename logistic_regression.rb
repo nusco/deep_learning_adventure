@@ -1,5 +1,6 @@
 require 'numo/narray'
 require 'numo/gsl'
+require "numo/linalg"
 require 'csv'
 
 
@@ -8,7 +9,7 @@ def sigmoid(z)
 end
 
 def forward(x, w)
-    sigmoid(x.dot(w))
+    sigmoid(Numo::Linalg.matmul(x, w))
 end
 
 def classify(x, w)
@@ -23,7 +24,7 @@ def loss(x, y, w)
 end
 
 def gradient(x, y, w)
-    x.transpose.dot(forward(x, w) - y) / x.shape[0]
+    Numo::Linalg.matmul(x.transpose, (forward(x, w) - y)) / x.shape[0]
 end
 
 def train(x, y, iterations:, lr:)
@@ -38,7 +39,7 @@ end
 def test(x, y, w)
     total_examples = x.shape[0]
     matches = (classify(x, w).eq y).count
-    matches_percent = matches * 100 / total_examples
+    matches_percent = matches * 100.0 / total_examples
     puts "Success: #{matches}/#{total_examples}"
 end
 

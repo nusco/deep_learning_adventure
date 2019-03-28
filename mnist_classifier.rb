@@ -2,11 +2,11 @@ require 'numo/narray'
 require 'numo/gsl'
 
 def sigmoid(z)
-    return 1 / (1 + Numo::NMath.exp(-z))
+    1 / (1 + Numo::NMath.exp(-z))
 end
 
 def forward(x, w)
-    return sigmoid(x.dot(w))
+    sigmoid(x.dot(w))
 end
 
 def classify(x, w)
@@ -20,7 +20,7 @@ def loss(x, y, w)
     y_hat = forward(x, w)
     first_term = y * Numo::NMath.log(y_hat)
     second_term = (1 - y) * Numo::NMath.log(1 - y_hat)
-    return -(first_term + second_term).sum / x.shape[0]
+    -(first_term + second_term).sum / x.shape[0]
 end
 
 def gradient(x, y, w)
@@ -30,7 +30,7 @@ end
 def report(iteration, x_train, y_train, x_test, y_test, w)
     total_examples = x_test.shape[0]
     matches = (classify(x_test, w).eq y_test).count
-    matches_percent = matches * 100 / total_examples
+    matches_percent = matches * 100.0 / total_examples
     training_loss = loss(x_train, y_train, w)
     puts "#{iteration} - Loss: #{training_loss}, #{matches_percent}%"
 end
@@ -42,7 +42,7 @@ def train(x_train, y_train, x_test, y_test, iterations:, lr:)
         w -= gradient(x_train, y_train, w) * lr
     end
     report(iteration, x_train, y_train, x_test, y_test, w)
-    return w
+    w
 end
 
 def one_hot_encode(labels, number_of_classes: 10)

@@ -1,9 +1,10 @@
 require 'numo/narray'
 require 'numo/gsl'
+require "numo/linalg"
 require 'csv'
 
 def predict(x, w)
-    x.dot(w)
+    Numo::Linalg.matmul(x, w)
 end
 
 def loss(x, y, w)
@@ -11,7 +12,7 @@ def loss(x, y, w)
 end
 
 def gradient(x, y, w)
-    2 * x.transpose.dot(predict(x, w) - y) / x.shape[0]
+    2 * Numo::Linalg.matmul(x.transpose, (predict(x, w) - y)) / x.shape[0]
 end
 
 def train(x, y, iterations:, lr:)
@@ -37,6 +38,7 @@ w = train(X, Y, iterations: 500000, lr: 0.001)
 
 puts "Weights: #{w.transpose}"
 puts "A few predictions:"
+require 'pry'; binding.pry
 0.upto(4) do |i|
     puts "X[#{i}, true] -> #{predict(X[i, true], w)[0]} (label: #{Y[i, true][0]})"
 end
