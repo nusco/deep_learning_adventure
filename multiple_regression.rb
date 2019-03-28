@@ -34,11 +34,11 @@ X = Numo::NArray.column_stack([
     ])
 Y = Numo::NArray[*data['Pizzas'].map(&:to_i)].reshape(data.size, 1)
 
-w = train(X, Y, iterations: 500000, lr: 0.001)
+w = train(X, Y, iterations: 50000, lr: 0.001)
 
 puts "Weights: #{w.transpose}"
 puts "A few predictions:"
-require 'pry'; binding.pry
+predictions = predict(X, w)
 0.upto(4) do |i|
-    puts "X[#{i}, true] -> #{predict(X[i, true], w)[0]} (label: #{Y[i, true][0]})"
+    puts "Prediction: #{predictions[i].round()}; label: #{Y[i]}"
 end
