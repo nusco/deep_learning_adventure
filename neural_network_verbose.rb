@@ -22,6 +22,10 @@ def softmax(logits)
     exponentials / exponentials_sum.reshape(exponentials_sum.size, 1)
 end
 
+def loss(y, y_hat)
+    -(y * log(y_hat)).sum() / y.shape[0]
+end
+
 def prepend_bias(m)
     m.insert(0, 1, axis: 1)
 end
@@ -58,9 +62,11 @@ def initialize_weights(n_input_variables, n_hidden_nodes, n_classes)
 end
 
 def report(iteration, x_train, y_train, x_test, y_test, w1, w2)
+    y_hat, _ = forward(x_train, w1, w2)
+    training_loss = loss(y_train, y_hat)
     classifications = classify(x_test, w1, w2)
     accuracy = (mean(classifications.eq(y_test)) * 100.0).round(2)
-    puts "#{iteration} > #{accuracy}%"
+    puts "Iteration: #{iteration}, Loss: #{training_loss}, Accuracy: #{accuracy}%"
 end
 
 def train(x_train, y_train, x_test, y_test, n_hidden_nodes:, iterations:, lr:)
