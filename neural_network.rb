@@ -12,14 +12,14 @@ def sigmoid(z)
     1 / (1 + exp(-z))
 end
 
+def sigmoid_gradient(sigmoid)
+    sigmoid * (1 - sigmoid)
+end
+
 def softmax(logits)
     exponentials = exp(logits)
     exponentials_sum = exponentials.sum(axis: 1)
     exponentials / exponentials_sum.reshape(exponentials_sum.size, 1)
-end
-
-def sigmoid_gradient(sigmoid)
-    sigmoid * (1 - sigmoid)
 end
 
 def loss(y, y_hat)
