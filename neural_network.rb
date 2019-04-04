@@ -6,6 +6,7 @@ def matmul(a, b); Numo::Linalg.matmul(a, b); end
 def exp(z); Numo::NMath.exp(z); end
 def log(z); Numo::NMath.log(z); end
 def sqrt(z); Numo::NMath.sqrt(z); end
+def mean(m); Numo::GSL::Stats.mean(m); end
 
 def sigmoid(z)
     1 / (1 + exp(-z))
@@ -61,10 +62,11 @@ def initialize_weights(n_input_variables, n_hidden_nodes, n_classes)
 end
 
 def report(iteration, x_train, y_train, x_test, y_test, w1, w2)
-    y_hat, _ = forward(x_train, w1, w2)
-    training_loss = loss(y_train, y_hat)
+    #y_hat, _ = forward(x_train, w1, w2)
+    #training_loss = loss(y_train, y_hat)
+    training_loss = 0
     classifications = classify(x_test, w1, w2)
-    accuracy = Numo::GSL::Stats.mean(classifications.eq(y_test)) * 100.0
+    accuracy = (mean(classifications.eq(y_test)) * 100.0).round(2)
     puts "Iteration: #{iteration}, Loss: #{training_loss}, Accuracy: #{accuracy}%"
 end
 
@@ -98,4 +100,4 @@ y_test_raw = Datasets::MNIST.new(type: :test).to_a.map(&:label)
 y_test = Numo::NArray[*y_test_raw].reshape(y_test_raw.size, 1)
 puts " Done"
 
-w1, w2 = train(x_train, y_train, x_test, y_test, n_hidden_nodes: 1200, iterations: 100, lr: 0.3)
+w1, w2 = train(x_train, y_train, x_test, y_test, n_hidden_nodes: 1200, iterations: 1000, lr: 0.3)
