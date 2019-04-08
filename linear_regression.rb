@@ -2,29 +2,29 @@ require 'numo/narray'
 require 'numo/gsl'
 require 'csv'
 
-def predict(x, w, b)
-    x * w + b
+def predict(x, a, b)
+    x * a + b
 end
 
-def loss(x, y, w, b)
-    Numo::GSL::Stats.mean((predict(x, w, b) - y) ** 2)
+def loss(x, y, a, b)
+    Numo::GSL::Stats.mean((predict(x, a, b) - y) ** 2)
 end
 
-def gradient(x, y, w, b)
-    w_gradient = Numo::GSL::Stats.mean(2 * X * (predict(x, w, b) - y))
-    b_gradient = Numo::GSL::Stats.mean(2 * (predict(x, w, b) - y))
+def gradient(x, y, a, b)
+    w_gradient = Numo::GSL::Stats.mean(2 * X * (predict(x, a, b) - y))
+    b_gradient = Numo::GSL::Stats.mean(2 * (predict(x, a, b) - y))
     return w_gradient, b_gradient
 end
 
 def train(x, y, iterations:, lr:)
-    w = b = 0
+    a = b = 0
     iterations.times do |iteration|
-        puts "#{iteration} => Loss: #{loss(x, y, w, b)}"
-        w_gradient, b_gradient = gradient(x, y, w, b)
-        w -= w_gradient * lr
+        puts "#{iteration} => Loss: #{loss(x, y, a, b)}"
+        a_gradient, b_gradient = gradient(x, y, a, b)
+        a -= a_gradient * lr
         b -= b_gradient * lr
     end
-    return w, b
+    return a, b
 end
 
 # Load data
@@ -33,12 +33,12 @@ X = Numo::NArray[*data['Reservations'].map(&:to_f)]
 Y = Numo::NArray[*data['Pizzas'].map(&:to_i)]
 
 # Phase 1: Find the line
-w, b = train(X, Y, iterations: 10000, lr: 0.001)
-puts "Parameters: w={w}, b=#{b}"
+a, b = train(X, Y, iterations: 10000, lr: 0.001)
+puts "Parameters: a={a}, b=#{b}"
 
 # Phase 2: Use the line to make a prediction
 x = 25
-y_hat = predict(x, w, b)
+y_hat = predict(x, a, b)
 puts "Prediction: reservations=#{x} => pizzas=#{y_hat}"
 
 puts "Enter to continue..."
@@ -52,5 +52,5 @@ plt.ylabel("Pizzas", fontsize: 20)
 plt.plot(X.to_a, Y.to_a, "go")
 x_edge, y_edge = 50, 50
 plt.axis([0, x_edge, 0, y_edge])
-plt.plot([0, x_edge], [b, predict(x_edge, w, b)], linewidth=2.0, color="b")
+plt.plot([0, x_edge], [b, predict(x_edge, a, b)], linewidth=2.0, color="b")
 plt.show()
