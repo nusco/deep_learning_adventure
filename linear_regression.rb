@@ -3,11 +3,12 @@ require 'numo/gsl'
 require 'csv'
 
 def predict(x, a, b)
-    x * a + b
+    a * x + b
 end
 
 def loss(x, y, a, b)
-    Numo::GSL::Stats.mean((predict(x, a, b) - y) ** 2)
+    squared_errors = (predict(x, a, b) - y) ** 2
+    Numo::GSL::Stats.mean(squared_errors)
 end
 
 def gradient(x, y, a, b)
@@ -34,7 +35,7 @@ Y = Numo::NArray[*data['Pizzas'].map(&:to_i)]
 
 # Phase 1: Find the line
 a, b = train(X, Y, iterations: 10000, lr: 0.001)
-puts "Parameters: a={a}, b=#{b}"
+puts "Parameters: a=#{a}, b=#{b}"
 
 # Phase 2: Use the line to make a prediction
 x = 25

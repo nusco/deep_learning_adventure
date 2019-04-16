@@ -41,7 +41,6 @@ def train(x_train, y_train, x_test, y_test, iterations:, lr:)
         report(iteration, x_train, y_train, x_test, y_test, w)
         w -= gradient(x_train, y_train, w) * lr
     end
-    report(iteration, x_train, y_train, x_test, y_test, w)
     w
 end
 
