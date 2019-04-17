@@ -3,7 +3,6 @@ require 'numo/gsl'
 require "numo/linalg"
 require 'csv'
 
-
 def sigmoid(z)
     1 / (1 + Numo::DFloat::Math.exp(-z))
 end
