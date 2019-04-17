@@ -8,23 +8,23 @@ def sigmoid(z)
     1 / (1 + Numo::DFloat::Math.exp(-z))
 end
 
-def forward(x, w)
+def predict(x, w)
     sigmoid(Numo::Linalg.matmul(x, w))
 end
 
 def classify(x, w)
-    forward(x, w).round()
+    predict(x, w).round()
 end
 
 def loss(x, y, w)
-    y_hat = forward(X, w)
+    y_hat = predict(X, w)
     first_term = y * Numo::DFloat::Math.log(y_hat)
     second_term = (1 - Y) * Numo::DFloat::Math.log(1 - y_hat)
     -Numo::GSL::Stats.mean(first_term + second_term)
 end
 
 def gradient(x, y, w)
-    Numo::Linalg.matmul(x.transpose, (forward(x, w) - y)) / x.shape[0]
+    Numo::Linalg.matmul(x.transpose, (predict(x, w) - y)) / x.shape[0]
 end
 
 def train(x, y, iterations:, lr:)

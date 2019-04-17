@@ -68,11 +68,11 @@ def train(x_train, y_train, x_test, y_test, n_hidden_nodes:, iterations:, lr:)
     n_classes = y_train.shape[1]
     w1, w2 = initialize_weights(n_input_variables, n_hidden_nodes, n_classes)
     iterations.times do |iteration|
+        report(iteration, x_train, y_train, x_test, y_test, w1, w2)
         y_hat, h = forward(x_train, w1, w2)
         w1_gradient, w2_gradient = back(x_train, y_train, y_hat, w2, h)
         w1 = w1 - (w1_gradient * lr)
         w2 = w2 - (w2_gradient * lr)
-        report(iteration, x_train, y_train, x_test, y_test, w1, w2)
     end
     [w1, w2]
 end

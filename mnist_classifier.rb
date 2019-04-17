@@ -5,26 +5,26 @@ def sigmoid(z)
     1 / (1 + Numo::NMath.exp(-z))
 end
 
-def forward(x, w)
+def predict(x, w)
     sigmoid(x.dot(w))
 end
 
 def classify(x, w)
-    y_hat = forward(x, w)
+    y_hat = predict(x, w)
     labels = Numo::Int32.zeros(y_hat.shape[0])
     (0...labels.shape[0]).each {|i| labels[i] = y_hat[i, true].max_index }
     labels
 end
 
 def loss(x, y, w)
-    y_hat = forward(x, w)
+    y_hat = predict(x, w)
     first_term = y * Numo::NMath.log(y_hat)
     second_term = (1 - y) * Numo::NMath.log(1 - y_hat)
     -(first_term + second_term).sum / x.shape[0]
 end
 
 def gradient(x, y, w)
-    x.transpose.dot(forward(x, w) - y) / x.shape[0]
+    x.transpose.dot(predict(x, w) - y) / x.shape[0]
 end
 
 def report(iteration, x_train, y_train, x_test, y_test, w)

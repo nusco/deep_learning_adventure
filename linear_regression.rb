@@ -38,9 +38,9 @@ a, b = train(X, Y, iterations: 10000, lr: 0.001)
 puts "Parameters: a=#{a}, b=#{b}"
 
 # Phase 2: Use the line to make a prediction
-x = 25
-y_hat = predict(x, a, b)
-puts "Prediction: reservations=#{x} => pizzas=#{y_hat}"
+reservations = 25
+pizzas = predict(reservations, a, b)
+puts "Prediction: reservations=#{reservations} => pizzas=#{pizzas}"
 
 puts "Enter to continue..."
 gets
